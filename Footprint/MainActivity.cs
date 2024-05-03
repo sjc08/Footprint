@@ -29,6 +29,7 @@ namespace Footprint
             switch (p0.ItemId)
             {
                 case Resource.Id.home:
+                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, new HomeFragment()).Commit();
                     break;
                 case Resource.Id.view:
                     break;
