@@ -1,10 +1,11 @@
 ﻿using Android.Content;
+using Android.Content.PM;
 using Android.Locations;
 using Android.OS;
 
 namespace Footprint
 {
-    [Service]
+    [Service(ForegroundServiceType = ForegroundService.TypeLocation)]
     public class LocationService : Service, ILocationListener
     {
         public const string CHANNEL_ID = "default_channel";
