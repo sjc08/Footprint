@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">足迹</string>
     <string name="app_text">用脚步串起人生！</string>
+    <string name="home">首页</string>
+    <string name="view">查看</string>
 </resources>
