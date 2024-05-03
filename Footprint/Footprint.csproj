@@ -10,4 +10,7 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.10.0.3" />
+  </ItemGroup>
 </Project>
