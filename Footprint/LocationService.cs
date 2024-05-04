@@ -27,7 +27,7 @@ namespace Footprint
             var builder = new Notification.Builder(this, CHANNEL_ID)
                 .SetContentTitle(Resources.GetString(Resource.String.app_name))
                 .SetContentText(Resources.GetString(Resource.String.app_text))
-                .SetSmallIcon(Resource.Mipmap.appicon)
+                .SetSmallIcon(Resource.Mipmap.ic_launcher)
                 .Build();
             StartForeground(NOTIFICATION_ID, builder);
             return StartCommandResult.Sticky;
