@@ -2,11 +2,11 @@
 
 namespace Footprint
 {
-    public class HomeFragment : Fragment
+    public class ViewFragment : Fragment
     {
         public override View? OnCreateView(LayoutInflater? inflater, ViewGroup? container, Bundle? savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.fragment_home, container, false);
+            return inflater.Inflate(Resource.Layout.fragment_view, container, false);
         }
     }
 }

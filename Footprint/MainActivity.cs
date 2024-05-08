@@ -22,6 +22,8 @@ namespace Footprint
 
             var bottomNav = FindViewById<BottomNavigationView>(Resource.Id.bottom_nav);
             bottomNav.SetOnItemSelectedListener(this);
+
+            FragmentManager.BeginTransaction().Replace(Resource.Id.content, new HomeFragment()).Commit();
         }
 
         public bool OnNavigationItemSelected(IMenuItem p0)
@@ -32,6 +34,7 @@ namespace Footprint
                     FragmentManager.BeginTransaction().Replace(Resource.Id.content, new HomeFragment()).Commit();
                     break;
                 case Resource.Id.view:
+                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, new ViewFragment()).Commit();
                     break;
             }
             return true;
