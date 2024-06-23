@@ -30,6 +30,8 @@ namespace Footprint
 
             locationManager = (LocationManager)GetSystemService(LocationService);
             Database.Connection.CreateTable<Point>();
+
+            Mode = 2;
         }
 
         public override StartCommandResult OnStartCommand(Intent? intent, StartCommandFlags flags, int startId)
@@ -43,19 +45,20 @@ namespace Footprint
             return StartCommandResult.Sticky;
         }
 
-        private int mode = 2;
+        private int mode;
         public int Mode
         {
             get => mode;
             set
             {
                 mode = value;
-                int interval = new int[] { 1, 10, 60, 600 }[mode];
+                int interval = new int[] { 1, 10, 60, 600, -1 }[mode];
                 Toast.MakeText(this, $"更新间隔：{interval} s", ToastLength.Short).Show();
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) == Permission.Granted)
                 {
                     locationManager.RemoveUpdates(this);
-                    locationManager.RequestLocationUpdates(LocationManager.GpsProvider, interval * 1000, 0, this);
+                    if (interval > 0)
+                        locationManager.RequestLocationUpdates(LocationManager.GpsProvider, interval * 1000, 0, this);
                 }
                 else
                 {

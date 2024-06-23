@@ -32,6 +32,7 @@ namespace Footprint
 
         private readonly HomeFragment home = new();
         private readonly ViewFragment view = new();
+        private readonly SettingsFragment settings = new();
 
         public bool OnNavigationItemSelected(IMenuItem p0)
         {
@@ -42,6 +43,9 @@ namespace Footprint
                     break;
                 case Resource.Id.view:
                     FragmentManager.BeginTransaction().Replace(Resource.Id.content, view).Commit();
+                    break;
+                case Resource.Id.settings:
+                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, settings).Commit();
                     break;
             }
             return true;
