@@ -12,7 +12,9 @@ namespace Footprint
 
         public override void OnViewCreated(View? view, Bundle? savedInstanceState)
         {
-            var group = Activity.FindViewById<MaterialButtonToggleGroup>(Resource.Id.toggleGroup);
+            base.OnViewCreated(view, savedInstanceState);
+
+            var group = view.FindViewById<MaterialButtonToggleGroup>(Resource.Id.toggleGroup);
             var c = ((MainActivity)Activity).Connector;
             for (int i = 0; i < group.ChildCount; i++)
             {
@@ -20,7 +22,7 @@ namespace Footprint
                 var radioButton = (MaterialButton)group.GetChildAt(i);
                 radioButton.Click += (_, _) => c.Service.Mode = index;
             }
-            Activity.FindViewById<TextView>(Resource.Id.textView).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
+            view.FindViewById<TextView>(Resource.Id.textView).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
             c.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
         }
     }
