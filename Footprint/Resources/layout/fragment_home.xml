@@ -40,11 +40,6 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:text="@string/mode_5" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp" />
     <WebView
         android:id="@+id/liveView"
         android:layout_width="match_parent"

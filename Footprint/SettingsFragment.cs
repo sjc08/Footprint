@@ -36,6 +36,7 @@ namespace Footprint
                                                                .SetNegativeButton("否", delegate { })
                                                                .Show();
             };
+            view.FindViewById<TextView>(Resource.Id.dataCount).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
         }
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent? data)

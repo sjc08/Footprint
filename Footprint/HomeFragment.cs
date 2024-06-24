@@ -43,7 +43,6 @@ namespace Footprint
                 var radioButton = (MaterialButton)group.GetChildAt(i);
                 radioButton.Click += (_, _) => connector.WhenConnected(s => s.Mode = index);
             }
-            view.FindViewById<TextView>(Resource.Id.textView).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
             connector.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;

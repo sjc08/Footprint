@@ -54,16 +54,22 @@ namespace Footprint
             {
                 mode = value;
                 int interval = new int[] { 1, 10, 60, 600, -1 }[mode];
-                Toast.MakeText(this, $"更新间隔：{interval} s", ToastLength.Short).Show();
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) == Permission.Granted)
+                locationManager.RemoveUpdates(this);
+                if (interval > 0)
                 {
-                    locationManager.RemoveUpdates(this);
-                    if (interval > 0)
+                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) == Permission.Granted)
+                    {
                         locationManager.RequestLocationUpdates(LocationManager.GpsProvider, interval * 1000, 0, this);
+                        Toast.MakeText(this, $"位置更新间隔：{interval} s", ToastLength.Short).Show();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, "请在设置中开启位置权限", ToastLength.Short).Show();
+                    }
                 }
                 else
                 {
-                    Toast.MakeText(this, "请在设置中开启位置权限", ToastLength.Short).Show();
+                    Toast.MakeText(this, "位置更新已暂停", ToastLength.Short).Show();
                 }
             }
         }
@@ -73,7 +79,7 @@ namespace Footprint
             Log.Debug(nameof(LocationService), "Location updated.");
             var last = Database.Connection.Table<Point>().LastOrDefault();
             // If it's the first record or the location has changed.
-            if (last == null || location.DistanceTo(last.ToLocation()) > 50)
+            if (last == default || location.DistanceTo(last.ToLocation()) > 50)
                 Database.Connection.Insert(Point.FromLocation(location));
             // Update the duration of stay.
             var point = Database.Connection.Table<Point>().Last();
