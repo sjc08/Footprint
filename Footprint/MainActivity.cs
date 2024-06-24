@@ -7,7 +7,7 @@ using Google.Android.Material.Navigation;
 
 namespace Footprint
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true, ConfigurationChanges = ConfigChanges.KeyboardHidden | ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
+    [Activity(Label = "@string/app_name", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : Activity, NavigationBarView.IOnItemSelectedListener
     {
         public ServiceConnector<LocationService> Connector { get; } = new();
@@ -28,6 +28,14 @@ namespace Footprint
             bottomNav.SetOnItemSelectedListener(this);
 
             FragmentManager.BeginTransaction().Replace(Resource.Id.content, home).Commit();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (Connector.Connected)
+                UnbindService(Connector);
         }
 
         private readonly HomeFragment home = new();

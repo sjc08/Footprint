@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Locations;
 using Android.OS;
+using Android.Util;
 using AndroidX.Core.Content;
 using Asjc.Android.ServiceHelper;
 
@@ -17,7 +18,7 @@ namespace Footprint
 
         public event Action<Point, Point>? OnPoint;
 
-        private LocationManager locationManager;
+        private LocationManager? locationManager;
 
         public override IBinder? OnBind(Intent? intent) => new ServiceBinder<LocationService>(this);
 
@@ -69,6 +70,7 @@ namespace Footprint
 
         public void OnLocationChanged(Location location)
         {
+            Log.Debug(nameof(LocationService), "Location updated.");
             var last = Database.Connection.Table<Point>().LastOrDefault();
             // If it's the first record or the location has changed.
             if (last == null || location.DistanceTo(last.ToLocation()) > 50)

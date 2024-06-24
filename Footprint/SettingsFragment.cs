@@ -31,7 +31,7 @@ namespace Footprint
             view.FindViewById<Button>(Resource.Id.button3).Click += (_, _) =>
             {
                 var builder = new AlertDialog.Builder(Activity).SetTitle("警告")
-                                                               .SetMessage($"{Database.Connection.Table<Point>().Count()} 条数据将会被永久删除！")
+                                                               .SetMessage($"您的所有数据将会被永久删除，此操作不可恢复！")
                                                                .SetPositiveButton("是", delegate { Database.Connection.DeleteAll<Point>(); })
                                                                .SetNegativeButton("否", delegate { })
                                                                .Show();
