@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="@string/clear_data" />
     </LinearLayout>
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dataCount"/>
