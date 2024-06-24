@@ -5,6 +5,19 @@ namespace Footprint
 {
     public class Point
     {
+        public Point() { }
+
+        public Point(Location location)
+        {
+            Time = location.Time;
+            Latitude = location.Latitude;
+            Longitude = location.Longitude;
+            Accuracy = location.Accuracy;
+            Altitude = location.Altitude;
+            Bearing = location.Bearing;
+            Speed = location.Speed;
+        }
+
         [PrimaryKey]
         public long Time { get; set; }
 
@@ -22,31 +35,17 @@ namespace Footprint
 
         public float Speed { get; set; }
 
-        public Location ToLocation()
+        public static explicit operator Location(Point p)
         {
             return new("")
             {
-                Time = Time,
-                Latitude = Latitude,
-                Longitude = Longitude,
-                Accuracy = Accuracy,
-                Altitude = Altitude,
-                Bearing = Bearing,
-                Speed = Speed
-            };
-        }
-
-        public static Point FromLocation(Location location)
-        {
-            return new()
-            {
-                Time = location.Time,
-                Latitude = location.Latitude,
-                Longitude = location.Longitude,
-                Accuracy = location.Accuracy,
-                Altitude = location.Altitude,
-                Bearing = location.Bearing,
-                Speed = location.Speed
+                Time = p.Time,
+                Latitude = p.Latitude,
+                Longitude = p.Longitude,
+                Accuracy = p.Accuracy,
+                Altitude = p.Altitude,
+                Bearing = p.Bearing,
+                Speed = p.Speed
             };
         }
     }
