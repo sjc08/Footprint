@@ -30,38 +30,44 @@
     </script>
     <script src="https://webapi.amap.com/maps?v=2.0&key=3b9a8c37d8a26809a658bb8c59ce17a4"></script>
     <script>
+        moment.locale('zh-cn');
+
         var map = new AMap.Map('container', {
             zoom: 16
         });
 
-        moment.locale('zh-cn');
-
-        function mark(point1, point2) {
-            var position1 = coordtransform.wgs84togcj02(point1.Longitude, point1.Latitude);
-            var position2 = coordtransform.wgs84togcj02(point2.Longitude, point2.Latitude);
-            $('#time1').text(moment(point1.Time).calendar());
-            $('#duration').text(moment.duration(point1.Duration).humanize());
-            $('#time2').text(moment(point2.Time).format('lll'));
-            $('#latitude').text(point2.Latitude.toFixed(5));
-            $('#longitude').text(point2.Longitude.toFixed(5));
-            $('#accuracy').text(point2.Accuracy.toFixed(1));
-            $('#altitude').text(point2.Altitude.toFixed(1));
-            $('#bearing').text(Math.round(point2.Bearing));
-            $('#speed').text((point2.Speed * 3.6).toFixed(1));
-            var marker1 = new AMap.Marker({
-                position: position1,
-                icon: 'flag.svg',
-                anchor: 'bottom-left'
-            });
-            var marker2 = new AMap.Marker({
-                position: position2,
-                icon: 'circle.svg',
-                anchor: 'center'
-            });
+        function mark(recPt, curPt) {
             map.clearMap();
-            map.add(marker1);
-            map.add(marker2);
-            map.panTo(position2);
+            // recorded point
+            if (recPt != null) {
+                var recPos = coordtransform.wgs84togcj02(recPt.Longitude, recPt.Latitude);
+                $('#duration').text(moment.duration(recPt.Duration).humanize());
+                $('#time1').text(moment(recPt.Time).calendar());
+                var marker1 = new AMap.Marker({
+                    position: recPos,
+                    icon: 'flag.svg',
+                    anchor: 'bottom-left'
+                });
+                map.add(marker1);
+            }
+            // current point
+            if (curPt != null) {
+                var curPos = coordtransform.wgs84togcj02(curPt.Longitude, curPt.Latitude);
+                $('#time2').text(moment(curPt.Time).format('lll'));
+                $('#latitude').text(curPt.Latitude.toFixed(5));
+                $('#longitude').text(curPt.Longitude.toFixed(5));
+                $('#accuracy').text(curPt.Accuracy.toFixed(1));
+                $('#altitude').text(curPt.Altitude.toFixed(1));
+                $('#bearing').text(Math.round(curPt.Bearing));
+                $('#speed').text((curPt.Speed * 3.6).toFixed(1));
+                var marker2 = new AMap.Marker({
+                    position: curPos,
+                    icon: 'circle.svg',
+                    anchor: 'center'
+                });
+                map.add(marker2);
+                map.panTo(curPos);
+            }
         }
     </script>
 </body>

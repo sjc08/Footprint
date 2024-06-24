@@ -46,13 +46,17 @@ namespace Footprint
             connector.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;
+            var myClient = new MyClient();
+            var last = Database.Connection.Table<Point>().LastOrDefault();
+            myClient.PageFinished += (view, url) => PointHandler(last, last);
+            live.SetWebViewClient(myClient);
             live.LoadUrl("file:///android_asset/www/live.html");
         }
 
-        public void PointHandler(Point p1, Point p2)
+        public void PointHandler(Point? recPt, Point? curPt)
         {
             Log.Debug(nameof(HomeFragment), "Got a point.");
-            live?.EvaluateJavascript($"mark({JsonSerializer.Serialize(p1)}, {JsonSerializer.Serialize(p2)})", null);
+            live?.EvaluateJavascript($"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})", null);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace Footprint
 {
     public class MyClient : WebViewClient
     {
-        public delegate void PageFinishedEventHandler(WebView view, string url);
+        public delegate void PageFinishedEventHandler(WebView? view, string? url);
 
-        public event PageFinishedEventHandler PageFinished;
+        public event PageFinishedEventHandler? PageFinished;
 
         public override void OnPageFinished(WebView? view, string? url)
         {
