@@ -54,22 +54,22 @@ namespace Footprint
             {
                 mode = value;
                 int interval = new int[] { 1, 10, 60, 600, -1 }[mode];
-                locationManager.RemoveUpdates(this);
+                locationManager?.RemoveUpdates(this);
                 if (interval > 0)
                 {
                     if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) == Permission.Granted)
                     {
-                        locationManager.RequestLocationUpdates(LocationManager.GpsProvider, interval * 1000, 0, this);
-                        Toast.MakeText(this, $"位置更新间隔：{interval} s", ToastLength.Short).Show();
+                        locationManager?.RequestLocationUpdates(LocationManager.GpsProvider, interval * 1000, 0, this);
+                        Toast.MakeText(this, $"位置更新间隔：{interval} s", ToastLength.Short)?.Show();
                     }
                     else
                     {
-                        Toast.MakeText(this, "请在设置中开启位置权限", ToastLength.Short).Show();
+                        Toast.MakeText(this, "请在设置中开启位置权限", ToastLength.Short)?.Show();
                     }
                 }
                 else
                 {
-                    Toast.MakeText(this, "位置更新已暂停", ToastLength.Short).Show();
+                    Toast.MakeText(this, "位置更新已暂停", ToastLength.Short)?.Show();
                 }
             }
         }
