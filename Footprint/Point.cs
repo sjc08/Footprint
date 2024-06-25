@@ -35,7 +35,7 @@ namespace Footprint
 
         public float Speed { get; set; }
 
-        public static explicit operator Location(Point p)
+        public static implicit operator Location(Point p)
         {
             return new("")
             {

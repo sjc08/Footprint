@@ -77,15 +77,16 @@ namespace Footprint
         public void OnLocationChanged(Location location)
         {
             Log.Debug(nameof(LocationService), "Location updated.");
-            var last = Database.Connection.Table<Point>().LastOrDefault();
+            Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
+            Point currentPoint = new(location);
             // If it's the first record or the location has changed.
-            if (last == default || location.DistanceTo((Location)last) > 50)
-                Database.Connection.Insert(new Point(location));
+            if (lastPoint == default || location.DistanceTo(lastPoint) > 50)
+                Database.Connection.Insert(currentPoint);
             // Update the duration of stay.
-            var point = Database.Connection.Table<Point>().Last();
-            point.Duration = location.Time - point.Time;
-            Database.Connection.Update(point);
-            OnPoint?.Invoke(point, new(location));
+            Point recordedPoint = Database.Connection.Table<Point>().Last();
+            recordedPoint.Duration = currentPoint.Time - recordedPoint.Time;
+            Database.Connection.Update(recordedPoint);
+            OnPoint?.Invoke(recordedPoint, currentPoint);
         }
 
         public void OnProviderDisabled(string provider) { }
