@@ -14,7 +14,7 @@ namespace Footprint
 
         public override View? OnCreateView(LayoutInflater? inflater, ViewGroup? container, Bundle? savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.fragment_home, container, false);
+            return inflater?.Inflate(Resource.Layout.fragment_home, container, false);
         }
 
         public override void OnCreate(Bundle? savedInstanceState)
@@ -28,14 +28,14 @@ namespace Footprint
         {
             base.OnStart();
 
-            connector.WhenConnected(s => s.OnPoint += PointHandler);
+            connector?.WhenConnected(s => s.OnPoint += PointHandler);
         }
 
         public override void OnStop()
         {
             base.OnStop();
 
-            connector.WhenConnected(s => s.OnPoint -= PointHandler);
+            connector?.WhenConnected(s => s.OnPoint -= PointHandler);
         }
 
         public override void OnViewCreated(View? view, Bundle? savedInstanceState)
@@ -47,9 +47,9 @@ namespace Footprint
             {
                 int index = i; // Pay attention to closures!
                 var radioButton = (MaterialButton)group.GetChildAt(i);
-                radioButton.Click += (_, _) => connector.WhenConnected(s => s.Mode = index);
+                radioButton.Click += (_, _) => connector?.WhenConnected(s => s.Mode = index);
             }
-            connector.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
+            connector?.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;
             var myClient = new MyClient();
