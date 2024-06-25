@@ -22,12 +22,18 @@ namespace Footprint
             base.OnCreate(savedInstanceState);
 
             connector = ((MainActivity)Activity).Connector;
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+
             connector.WhenConnected(s => s.OnPoint += PointHandler);
         }
 
-        public override void OnDestroy()
+        public override void OnStop()
         {
-            base.OnDestroy();
+            base.OnStop();
 
             connector.WhenConnected(s => s.OnPoint -= PointHandler);
         }
