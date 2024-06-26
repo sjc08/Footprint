@@ -5,23 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
-    <link rel="stylesheet" href="halfmoon.min.css">
-    <script src="halfmoon.min.js"></script>
-    <script src="jquery.min.js"></script>
-    <script src="moment-with-locales.min.js"></script>
     <script src="coordtransform.min.js"></script>
 </head>
 
-<body>
-    <div class="position-absolute z-10 pointer-events-none m-10">
-        <span id="time1">记录时间</span> | <span id="duration">停留时长</span><br>
-        [ <span id="time2">更新时间</span> ]<br>
-        坐标: <span id="latitude">-</span>,<span id="longitude">-</span><br>
-        精度: <span id="accuracy">-</span> m<br>
-        海拔: <span id="altitude">-</span> m<br>
-        方向: <span id="bearing">-</span>°<br>
-        速度: <span id="speed">-</span> km/h
-    </div>
+<body style="margin: 0;">
     <div id="container" style="height: 100vh;"></div>
     <script>
         window._AMapSecurityConfig = {
@@ -30,8 +17,6 @@
     </script>
     <script src="https://webapi.amap.com/maps?v=2.0&key=3b9a8c37d8a26809a658bb8c59ce17a4"></script>
     <script>
-        moment.locale('zh-cn');
-
         var map = new AMap.Map('container', {
             zoom: 16
         });
@@ -41,8 +26,6 @@
             // recorded point
             if (recPt != null) {
                 var recPos = coordtransform.wgs84togcj02(recPt.Longitude, recPt.Latitude);
-                $('#duration').text(moment.duration(recPt.Duration).humanize());
-                $('#time1').text(moment(recPt.Time).calendar());
                 var marker1 = new AMap.Marker({
                     position: recPos,
                     icon: 'flag.svg',
@@ -53,13 +36,6 @@
             // current point
             if (curPt != null) {
                 var curPos = coordtransform.wgs84togcj02(curPt.Longitude, curPt.Latitude);
-                $('#time2').text(moment(curPt.Time).format('lll'));
-                $('#latitude').text(curPt.Latitude.toFixed(5));
-                $('#longitude').text(curPt.Longitude.toFixed(5));
-                $('#accuracy').text(curPt.Accuracy.toFixed(1));
-                $('#altitude').text(curPt.Altitude.toFixed(1));
-                $('#bearing').text(Math.round(curPt.Bearing));
-                $('#speed').text((curPt.Speed * 3.6).toFixed(1));
                 var marker2 = new AMap.Marker({
                     position: curPos,
                     icon: 'circle.svg',

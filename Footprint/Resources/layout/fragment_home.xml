@@ -44,8 +44,17 @@
                 android:text="@string/mode_5" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </HorizontalScrollView>
-    <WebView
-        android:id="@+id/liveView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/liveView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+    </FrameLayout>
 </LinearLayout>

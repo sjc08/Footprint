@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Webkit;
 using Asjc.Android.ServiceHelper;
 using Google.Android.Material.Button;
+using Humanizer;
 using System.Text.Json;
 
 namespace Footprint
@@ -63,6 +64,20 @@ namespace Footprint
         {
             Log.Debug(nameof(HomeFragment), "Got a point.");
             live?.EvaluateJavascript($"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})", null);
+            if (recPt != null && curPt != null)
+            {
+                Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.line,
+                [
+                    recPt.Duration.Milliseconds().Humanize(),
+                    new DateTime(1970,1,1,0,0,0).AddMilliseconds(curPt.Time).ToLocalTime().ToString(),
+                    curPt.Latitude,
+                    curPt.Longitude,
+                    curPt.Accuracy,
+                    curPt.Altitude,
+                    curPt.Bearing,
+                    curPt.Speed
+                ]);
+            }
         }
     }
 }
