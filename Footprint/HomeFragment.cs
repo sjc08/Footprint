@@ -77,7 +77,7 @@ namespace Footprint
                     curPt.Accuracy,
                     curPt.Altitude,
                     curPt.Bearing,
-                    curPt.Speed
+                    curPt.Speed * 3.6
                 ]);
             }
         }

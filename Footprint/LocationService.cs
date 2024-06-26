@@ -80,7 +80,9 @@ namespace Footprint
             Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
             Point currentPoint = new(location);
             // If it's the first record or the location has changed.
-            if (lastPoint == default || location.DistanceTo(lastPoint) > 50)
+            if (lastPoint == default
+                || location.DistanceTo(lastPoint) > 50
+                || Math.Abs(currentPoint.Altitude - lastPoint.Altitude) > 50)
                 Database.Connection.Insert(currentPoint);
             // Update the duration of stay.
             Point recordedPoint = Database.Connection.Table<Point>().Last();
