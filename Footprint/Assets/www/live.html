@@ -5,44 +5,50 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
+    <script src="l7.js"></script>
     <script src="coordtransform.min.js"></script>
 </head>
 
 <body style="margin: 0;">
-    <div id="container" style="height: 100vh;"></div>
+    <div id="map" style="height: 100vh;"></div>
     <script>
         window._AMapSecurityConfig = {
             securityJsCode: 'c68019763999486713f65af69b812d37'
         }
     </script>
-    <script src="https://webapi.amap.com/maps?v=2.0&key=3b9a8c37d8a26809a658bb8c59ce17a4"></script>
     <script>
-        var map = new AMap.Map('container', {
-            zoom: 16
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.GaodeMap({
+                zoom: 16,
+                token: '3b9a8c37d8a26809a658bb8c59ce17a4'
+            })
         });
 
         function mark(recPt, curPt) {
-            map.clearMap();
+            scene.removeAllMarkers();
             // recorded point
             if (recPt != null) {
                 var recPos = coordtransform.wgs84togcj02(recPt.Longitude, recPt.Latitude);
-                var marker1 = new AMap.Marker({
-                    position: recPos,
-                    icon: 'flag.svg',
+                const recImg = document.createElement('img');
+                recImg.src = 'flag.svg';
+                const marker = new L7.Marker({
+                    element: recImg,
                     anchor: 'bottom-left'
-                });
-                map.add(marker1);
+                }).setLnglat(recPos);
+                scene.addMarker(marker)
             }
             // current point
             if (curPt != null) {
                 var curPos = coordtransform.wgs84togcj02(curPt.Longitude, curPt.Latitude);
-                var marker2 = new AMap.Marker({
-                    position: curPos,
-                    icon: 'circle.svg',
+                const curImg = document.createElement('img');
+                curImg.src = 'circle.svg';
+                var marker2 = new L7.Marker({
+                    element: curImg,
                     anchor: 'center'
-                });
-                map.add(marker2);
-                map.panTo(curPos);
+                }).setLnglat(curPos);
+                scene.addMarker(marker2);
+                scene.panTo(curPos);
             }
         }
     </script>

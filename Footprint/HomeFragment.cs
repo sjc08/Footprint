@@ -63,7 +63,9 @@ namespace Footprint
         public void PointHandler(Point? recPt, Point? curPt)
         {
             Log.Debug(nameof(HomeFragment), "Got a point.");
-            live?.EvaluateJavascript($"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})", null);
+            string script = $"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})";
+            live?.EvaluateJavascript(script, null);
+            // Log.Debug(nameof(HomeFragment), script);
             if (recPt != null && curPt != null)
             {
                 Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.info,
