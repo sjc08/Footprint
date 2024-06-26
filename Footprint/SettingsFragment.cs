@@ -50,7 +50,7 @@ namespace Footprint
                 {
                     if (requestCode == 1)
                     {
-                        using var inputStream = Activity.ContentResolver.OpenInputStream(uri);
+                        using var inputStream = Context.ContentResolver.OpenInputStream(uri);
                         using var reader = new StreamReader(inputStream);
                         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                         var records = csv.GetRecords<Point>();
@@ -58,7 +58,7 @@ namespace Footprint
                     }
                     if (requestCode == 2)
                     {
-                        using var outputStream = Activity.ContentResolver.OpenOutputStream(DocumentFile.FromTreeUri(Activity, uri).CreateFile("text/csv", "Footprint.csv").Uri);
+                        using var outputStream = Context.ContentResolver.OpenOutputStream(DocumentFile.FromTreeUri(Activity, uri).CreateFile("text/csv", "Footprint.csv").Uri);
                         using var writer = new StreamWriter(outputStream);
                         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                         var records = Database.Connection.Table<Point>().ToList();

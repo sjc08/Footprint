@@ -59,6 +59,7 @@
         const scene = new L7.Scene({
             id: 'map',
             map: new L7.GaodeMap({
+                style: 'normal',
                 token: '3b9a8c37d8a26809a658bb8c59ce17a4'
             }),
         });
@@ -94,7 +95,7 @@
             // 绘制轨迹
             const layer = new L7.LineLayer({})
                 .source(convert(path))
-                .size(2.4)
+                .size(3)
                 .shape('line')
                 .color('#2196F3')
                 .animate({

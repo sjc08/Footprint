@@ -53,10 +53,10 @@ namespace Footprint
             connector?.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;
-            var myClient = new MyClient();
+            MyClient client = new();
             var last = Database.Connection.Table<Point>().LastOrDefault();
-            myClient.PageFinished += (view, url) => PointHandler(last, last);
-            live.SetWebViewClient(myClient);
+            client.PageFinished += (_, _) => PointHandler(last, last);
+            live.SetWebViewClient(client);
             live.LoadUrl("file:///android_asset/www/live.html");
         }
 
@@ -66,7 +66,7 @@ namespace Footprint
             string script = $"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})";
             live?.EvaluateJavascript(script, null);
             // Log.Debug(nameof(HomeFragment), script);
-            if (recPt != null && curPt != null)
+            if (recPt != null && curPt != null && IsAdded)
             {
                 Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.info,
                 [

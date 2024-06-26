@@ -17,14 +17,14 @@ namespace Footprint
 
             var webView = view.FindViewById<WebView>(Resource.Id.webView);
             webView.Settings.JavaScriptEnabled = true;
-            var myClient = new MyClient();
-            myClient.PageFinished += (view, url) =>
+            MyClient client = new();
+            client.PageFinished += (view, _) =>
             {
                 string script = $"data = {JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}";
                 view?.EvaluateJavascript(script, null);
                 // Log.Debug(nameof(ViewFragment), script);
             };
-            webView.SetWebViewClient(myClient);
+            webView.SetWebViewClient(client);
             webView.LoadUrl("file:///android_asset/www/view.html");
         }
     }
