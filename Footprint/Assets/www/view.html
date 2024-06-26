@@ -56,6 +56,8 @@
         }
     </script>
     <script>
+        moment.locale(navigator.language);
+
         const scene = new L7.Scene({
             id: 'map',
             map: new L7.GaodeMap({
@@ -63,6 +65,7 @@
                 token: '3b9a8c37d8a26809a658bb8c59ce17a4'
             }),
         });
+        scene.addImage('arrow', 'arrow.svg');
 
         $(function () {
             $('#time').daterangepicker({
@@ -78,32 +81,40 @@
             scene.removeAllLayer();
             scene.removeAllMarkers();
             var path = [];
+            // markers
+            const markerLayer = new L7.MarkerLayer();
             data.forEach(i => {
                 var time = moment(i.Time);
                 var duration = moment.duration(i.Duration);
                 var position = coordtransform.wgs84togcj02(i.Longitude, i.Latitude);
-                // 检查时间
+                // check time
                 var drp = $('#time').data('daterangepicker');
                 if (time.isBetween(drp.startDate, drp.endDate)) {
                     path.push(position);
                     if (duration.asMinutes() >= 30) {
                         const marker = new L7.Marker().setLnglat(position);
-                        scene.addMarker(marker);
+                        markerLayer.addMarker(marker);
                     }
                 }
             });
-            // 绘制轨迹
-            const layer = new L7.LineLayer({})
+            scene.addMarkerLayer(markerLayer);
+            // line
+            const lineLayer = new L7.LineLayer({ autoFit: true })
                 .source(convert(path))
                 .size(3)
                 .shape('line')
+                .texture('arrow')
                 .color('#2196F3')
                 .animate({
-                    interval: 1,
                     duration: 5,
-                    trailLength: 1.5
+                    interval: 1,
+                    trailLength: 2
+                })
+                .style({
+                    lineTexture: true,
+                    iconStep: 10,
                 });
-            scene.addLayer(layer);
+            scene.addLayer(lineLayer);
             $('#count').text(path.length);
         }
 
