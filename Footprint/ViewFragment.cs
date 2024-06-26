@@ -20,8 +20,9 @@ namespace Footprint
             var myClient = new MyClient();
             myClient.PageFinished += (view, url) =>
             {
-                var script = $"data = {JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}";
-                view.EvaluateJavascript(script, null);
+                string script = $"data = {JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}";
+                view?.EvaluateJavascript(script, null);
+                // Log.Debug(nameof(ViewFragment), script);
             };
             webView.SetWebViewClient(myClient);
             webView.LoadUrl("file:///android_asset/www/view.html");

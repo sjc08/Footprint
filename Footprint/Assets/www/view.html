@@ -1,6 +1,4 @@
-﻿<!-- I wrote this a long time ago, but it does work. -->
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,6 +11,7 @@
     <script src="jquery.min.js"></script>
     <script src="moment-with-locales.min.js"></script>
     <script src="daterangepicker.min.js"></script>
+    <script src="l7.js"></script>
     <script src="coordtransform.min.js"></script>
 </head>
 
@@ -48,19 +47,20 @@
             </div>
         </div>
         <div class="content-wrapper">
-            <div id="container" style="height: 100%;"></div>
+            <div id="map" style="height: 100%;"></div>
         </div>
     </div>
-    <!-- 高德地图 -->
     <script>
         window._AMapSecurityConfig = {
             securityJsCode: 'c68019763999486713f65af69b812d37'
         }
     </script>
-    <script src="https://webapi.amap.com/maps?v=2.0&key=3b9a8c37d8a26809a658bb8c59ce17a4"></script>
     <script>
-        var map = new AMap.Map('container', {
-            viewMode: '3D'
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.GaodeMap({
+                token: '3b9a8c37d8a26809a658bb8c59ce17a4'
+            }),
         });
 
         $(function () {
@@ -74,7 +74,8 @@
         });
 
         function draw() {
-            map.clearMap(); // 清空地图
+            scene.removeAllLayer();
+            scene.removeAllMarkers();
             var path = [];
             data.forEach(i => {
                 var time = moment(i.Time);
@@ -85,26 +86,41 @@
                 if (time.isBetween(drp.startDate, drp.endDate)) {
                     path.push(position);
                     if (duration.asMinutes() >= 30) {
-                        var marker = new AMap.Marker({
-                            position: position,
-                            icon: 'location.svg',
-                            anchor: 'bottom-center'
-                        });
-                        map.add(marker);
+                        const marker = new L7.Marker().setLnglat(position);
+                        scene.addMarker(marker);
                     }
                 }
             });
             // 绘制轨迹
-            var polyline = new AMap.Polyline({
-                path: path,
-                showDir: true,
-                strokeOpacity: 0.75,
-                strokeWeight: 5,
-                lineJoin: 'round'
-            });
-            map.add(polyline);
-            map.setFitView();
+            const layer = new L7.LineLayer({})
+                .source(convert(path))
+                .size(2.4)
+                .shape('line')
+                .color('#2196F3')
+                .animate({
+                    interval: 1,
+                    duration: 5,
+                    trailLength: 1.5
+                });
+            scene.addLayer(layer);
             $('#count').text(path.length);
+        }
+
+        function convert(coord) {
+            const geoJSON = {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: coord
+                        }
+                    }
+                ]
+            };
+            return geoJSON;
         }
     </script>
 </body>
