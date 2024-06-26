@@ -43,7 +43,7 @@ namespace Footprint
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            if (resultCode == Result.Ok)
+            if (resultCode == Result.Ok && data != null)
             {
                 var uri = data.Data;
                 try

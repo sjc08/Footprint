@@ -66,7 +66,7 @@ namespace Footprint
             live?.EvaluateJavascript($"mark({JsonSerializer.Serialize(recPt)}, {JsonSerializer.Serialize(curPt)})", null);
             if (recPt != null && curPt != null)
             {
-                Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.line,
+                Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.info,
                 [
                     recPt.Duration.Milliseconds().Humanize(),
                     new DateTime(1970,1,1,0,0,0).AddMilliseconds(curPt.Time).ToLocalTime().ToString(),

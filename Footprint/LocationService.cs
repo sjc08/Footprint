@@ -64,7 +64,7 @@ namespace Footprint
                     }
                     else
                     {
-                        Toast.MakeText(this, "请在设置中开启位置权限", ToastLength.Short)?.Show();
+                        Toast.MakeText(this, "请在系统设置中开启位置权限", ToastLength.Short)?.Show();
                     }
                 }
                 else
