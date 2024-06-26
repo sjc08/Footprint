@@ -66,6 +66,10 @@
             }),
         });
         scene.addImage('arrow', 'arrow.svg');
+        scene.on('loaded', () => {
+            const mapTheme = new L7.MapTheme();
+            scene.addControl(mapTheme);
+        });
 
         $(function () {
             $('#time').daterangepicker({
