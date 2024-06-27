@@ -1,5 +1,6 @@
 ﻿using Android.Views;
 using Android.Webkit;
+using Asjc.JsonConfig;
 using System.Text.Json;
 
 namespace Footprint
@@ -23,6 +24,7 @@ namespace Footprint
                 string script = $"data = {JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}";
                 view?.EvaluateJavascript(script, null);
                 // Log.Debug(nameof(ViewFragment), script);
+                view?.EvaluateJavascript($"scene.setMapStyle('{Settings.Instance.MapTheme}')", null);
             };
             webView.SetWebViewClient(client);
             webView.LoadUrl("file:///android_asset/www/view.html");

@@ -2,6 +2,7 @@
 using Android.Views;
 using Android.Webkit;
 using Asjc.Android.ServiceHelper;
+using Asjc.JsonConfig;
 using Google.Android.Material.Button;
 using Humanizer;
 using System.Text.Json;
@@ -55,7 +56,11 @@ namespace Footprint
             live.Settings.JavaScriptEnabled = true;
             MyClient client = new();
             var last = Database.Connection.Table<Point>().LastOrDefault();
-            client.PageFinished += (_, _) => PointHandler(last, last);
+            client.PageFinished += (_, _) =>
+            {
+                live?.EvaluateJavascript($"scene.setMapStyle('{Settings.Instance.MapTheme}')", null);
+                PointHandler(last, last);
+            };
             live.SetWebViewClient(client);
             live.LoadUrl("file:///android_asset/www/live.html");
         }

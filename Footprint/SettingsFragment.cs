@@ -37,6 +37,16 @@ namespace Footprint
                                                                .Show();
             };
             view.FindViewById<TextView>(Resource.Id.dataCount).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
+            var mapTheme = view.FindViewById<EditText>(Resource.Id.mapTheme);
+            mapTheme.Text = Settings.Instance.MapTheme;
+            mapTheme.TextChanged += (sender, e) => Settings.Instance.MapTheme = e.Text.ToString();
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            Settings.Instance.Save();
         }
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
