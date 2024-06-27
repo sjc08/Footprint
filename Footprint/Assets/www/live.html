@@ -13,10 +13,7 @@
     <div id="map" style="height: 100vh;"></div>
     <script src="script.js"></script>
     <script>
-        function init(theme) {
-            createScene(theme);
-            scene.setZoom(16);
-        }
+        scene.on('loaded', () => scene.setZoom(16));
 
         function mark(recPt, curPt) {
             scene.removeAllMarkers();

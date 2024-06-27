@@ -54,15 +54,11 @@
     <script>
         moment.locale(navigator.language);
 
-        function init(data, theme) {
-            points = data;
-            createScene(theme);
-            scene.addImage('arrow', 'arrow.svg');
-            scene.on('loaded', () => {
-                const mapTheme = new L7.MapTheme();
-                scene.addControl(mapTheme);
-            });
-        }
+        scene.addImage('arrow', 'arrow.svg');
+        scene.on('loaded', () => {
+            const mapTheme = new L7.MapTheme();
+            scene.addControl(mapTheme);
+        });
 
         $(function () {
             $('#time').daterangepicker({
@@ -80,7 +76,7 @@
             var path = [];
             // markers
             const markerLayer = new L7.MarkerLayer();
-            points.forEach(i => {
+            JSON.parse(CS.Points()).forEach(i => {
                 var time = moment(i.Time);
                 var duration = moment.duration(i.Duration);
                 var position = coordtransform.wgs84togcj02(i.Longitude, i.Latitude);

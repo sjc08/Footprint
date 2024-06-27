@@ -54,13 +54,10 @@ namespace Footprint
             connector?.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;
+            live.AddJavascriptInterface(new JavascriptInterface(), "CS");
             MyClient client = new();
             var last = Database.Connection.Table<Point>().LastOrDefault();
-            client.PageFinished += (_, _) =>
-            {
-                live?.EvaluateJavascript($"init('{Settings.Instance.MapTheme}')", null);
-                PointHandler(last, last);
-            };
+            client.PageFinished += (_, _) => PointHandler(last, last);
             live.SetWebViewClient(client);
             live.LoadUrl("file:///android_asset/www/live.html");
         }

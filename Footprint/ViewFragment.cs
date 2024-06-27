@@ -18,14 +18,7 @@ namespace Footprint
 
             var webView = view.FindViewById<WebView>(Resource.Id.webView);
             webView.Settings.JavaScriptEnabled = true;
-            MyClient client = new();
-            client.PageFinished += (view, _) =>
-            {
-                string script = $"init({JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}, '{Settings.Instance.MapTheme}')";
-                view?.EvaluateJavascript(script, null);
-                // Log.Debug(nameof(ViewFragment), script);
-            };
-            webView.SetWebViewClient(client);
+            webView.AddJavascriptInterface(new JavascriptInterface(), "CS");
             webView.LoadUrl("file:///android_asset/www/view.html");
         }
     }
