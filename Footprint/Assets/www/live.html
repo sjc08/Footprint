@@ -11,19 +11,12 @@
 
 <body style="margin: 0;">
     <div id="map" style="height: 100vh;"></div>
+    <script src="script.js"></script>
     <script>
-        window._AMapSecurityConfig = {
-            securityJsCode: 'c68019763999486713f65af69b812d37'
+        function init(theme) {
+            createScene(theme);
+            scene.setZoom(16);
         }
-    </script>
-    <script>
-        const scene = new L7.Scene({
-            id: 'map',
-            map: new L7.GaodeMap({
-                zoom: 16,
-                token: '3b9a8c37d8a26809a658bb8c59ce17a4'
-            })
-        });
 
         function mark(recPt, curPt) {
             scene.removeAllMarkers();

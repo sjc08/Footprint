@@ -21,10 +21,9 @@ namespace Footprint
             MyClient client = new();
             client.PageFinished += (view, _) =>
             {
-                string script = $"data = {JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}";
+                string script = $"init({JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList())}, '{Settings.Instance.MapTheme}')";
                 view?.EvaluateJavascript(script, null);
                 // Log.Debug(nameof(ViewFragment), script);
-                view?.EvaluateJavascript($"scene.setMapStyle('{Settings.Instance.MapTheme}')", null);
             };
             webView.SetWebViewClient(client);
             webView.LoadUrl("file:///android_asset/www/view.html");

@@ -50,25 +50,19 @@
             <div id="map" style="height: 100%;"></div>
         </div>
     </div>
-    <script>
-        window._AMapSecurityConfig = {
-            securityJsCode: 'c68019763999486713f65af69b812d37'
-        }
-    </script>
+    <script src="script.js"></script>
     <script>
         moment.locale(navigator.language);
 
-        const scene = new L7.Scene({
-            id: 'map',
-            map: new L7.GaodeMap({
-                token: '3b9a8c37d8a26809a658bb8c59ce17a4'
-            }),
-        });
-        scene.addImage('arrow', 'arrow.svg');
-        scene.on('loaded', () => {
-            const mapTheme = new L7.MapTheme();
-            scene.addControl(mapTheme);
-        });
+        function init(data, theme) {
+            points = data;
+            createScene(theme);
+            scene.addImage('arrow', 'arrow.svg');
+            scene.on('loaded', () => {
+                const mapTheme = new L7.MapTheme();
+                scene.addControl(mapTheme);
+            });
+        }
 
         $(function () {
             $('#time').daterangepicker({
@@ -86,7 +80,7 @@
             var path = [];
             // markers
             const markerLayer = new L7.MarkerLayer();
-            data.forEach(i => {
+            points.forEach(i => {
                 var time = moment(i.Time);
                 var duration = moment.duration(i.Duration);
                 var position = coordtransform.wgs84togcj02(i.Longitude, i.Latitude);
@@ -107,7 +101,7 @@
                 .size(3)
                 .shape('line')
                 .texture('arrow')
-                .color('#2196F3')
+                .color('#20B2AA')
                 .animate({
                     duration: 5,
                     interval: 1,

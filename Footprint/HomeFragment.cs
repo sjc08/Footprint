@@ -58,7 +58,7 @@ namespace Footprint
             var last = Database.Connection.Table<Point>().LastOrDefault();
             client.PageFinished += (_, _) =>
             {
-                live?.EvaluateJavascript($"scene.setMapStyle('{Settings.Instance.MapTheme}')", null);
+                live?.EvaluateJavascript($"init('{Settings.Instance.MapTheme}')", null);
                 PointHandler(last, last);
             };
             live.SetWebViewClient(client);
