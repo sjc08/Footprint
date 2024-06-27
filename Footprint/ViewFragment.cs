@@ -1,7 +1,5 @@
 ﻿using Android.Views;
 using Android.Webkit;
-using Asjc.JsonConfig;
-using System.Text.Json;
 
 namespace Footprint
 {

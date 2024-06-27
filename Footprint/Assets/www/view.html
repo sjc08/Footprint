@@ -58,6 +58,16 @@
         scene.on('loaded', () => {
             const mapTheme = new L7.MapTheme();
             scene.addControl(mapTheme);
+            // points
+            var points = []
+            JSON.parse(CS.Points()).forEach(i => {
+                points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
+            });
+            const pointLayer = new L7.PointLayer()
+                .source(convert(points, 'MultiPoint'))
+                .size(1)
+                .color('#6A00FF');
+            scene.addLayer(pointLayer);
         });
 
         $(function () {
@@ -93,7 +103,7 @@
             scene.addMarkerLayer(markerLayer);
             // line
             const lineLayer = new L7.LineLayer({ autoFit: true })
-                .source(convert(path))
+                .source(convert(path, 'LineString'))
                 .size(3)
                 .shape('line')
                 .texture('arrow')
@@ -111,7 +121,7 @@
             $('#count').text(path.length);
         }
 
-        function convert(coord) {
+        function convert(coordinates, type) {
             const geoJSON = {
                 type: 'FeatureCollection',
                 features: [
@@ -119,8 +129,8 @@
                         type: 'Feature',
                         properties: {},
                         geometry: {
-                            type: 'LineString',
-                            coordinates: coord
+                            type: type,
+                            coordinates: coordinates
                         }
                     }
                 ]
