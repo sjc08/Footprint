@@ -63,10 +63,10 @@
             JSON.parse(CS.Points()).forEach(i => {
                 points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
             });
-            const pointLayer = new L7.PointLayer()
+            const pointLayer = new L7.PointLayer({ blend: 'additive' })
                 .source(convert(points, 'MultiPoint'))
-                .size(1)
-                .color('#6A00FF');
+                .size(0.5)
+                .color('#080298');
             scene.addLayer(pointLayer);
         });
 

@@ -15,6 +15,7 @@ namespace Footprint
             base.OnViewCreated(view, savedInstanceState);
 
             var webView = view.FindViewById<WebView>(Resource.Id.webView);
+            webView.Settings.AllowUniversalAccessFromFileURLs = true;
             webView.Settings.JavaScriptEnabled = true;
             webView.AddJavascriptInterface(new JavascriptInterface(), "CS");
             webView.LoadUrl("file:///android_asset/www/view.html");
