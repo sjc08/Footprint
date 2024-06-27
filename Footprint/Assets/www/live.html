@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
-    <script src="l7.js"></script>
-    <script src="coordtransform.min.js"></script>
+    <script src="js/coordtransform.min.js"></script>
+    <script src="js/l7.js"></script>
 </head>
 
 <body style="margin: 0;">
     <div id="map" style="height: 100vh;"></div>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
     <script>
         scene.on('loaded', () => scene.setZoom(16));
 
@@ -21,7 +21,7 @@
             if (recPt != null) {
                 var recPos = coordtransform.wgs84togcj02(recPt.Longitude, recPt.Latitude);
                 const recImg = document.createElement('img');
-                recImg.src = 'flag.svg';
+                recImg.src = 'img/flag.svg';
                 const marker = new L7.Marker({
                     element: recImg,
                     anchor: 'bottom-left'
@@ -32,7 +32,7 @@
             if (curPt != null) {
                 var curPos = coordtransform.wgs84togcj02(curPt.Longitude, curPt.Latitude);
                 const curImg = document.createElement('img');
-                curImg.src = 'circle.svg';
+                curImg.src = 'img/circle.svg';
                 var marker2 = new L7.Marker({
                     element: curImg,
                     anchor: 'center'

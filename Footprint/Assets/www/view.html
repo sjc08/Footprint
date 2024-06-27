@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
-    <link rel="stylesheet" href="halfmoon.min.css">
-    <link rel="stylesheet" href="daterangepicker.min.css" />
-    <script src="halfmoon.min.js"></script>
-    <script src="jquery.min.js"></script>
-    <script src="moment-with-locales.min.js"></script>
-    <script src="daterangepicker.min.js"></script>
-    <script src="l7.js"></script>
-    <script src="coordtransform.min.js"></script>
+    <link rel="stylesheet" href="css/halfmoon.min.css">
+    <link rel="stylesheet" href="css/daterangepicker.min.css" />
+    <script src="js/halfmoon.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/moment-with-locales.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+    <script src="js/coordtransform.min.js"></script>
+    <script src="js/l7.js"></script>
 </head>
 
 <body>
@@ -50,11 +50,11 @@
             <div id="map" style="height: 100%;"></div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
     <script>
         moment.locale(navigator.language);
 
-        scene.addImage('arrow', 'arrow.svg');
+        scene.addImage('arrow', 'img/arrow.svg');
         scene.on('loaded', () => {
             const mapTheme = new L7.MapTheme();
             scene.addControl(mapTheme);
