@@ -2,7 +2,7 @@
 using Android.Views;
 using Android.Webkit;
 using Asjc.Android.ServiceHelper;
-using Asjc.JsonConfig;
+using Asjc.Android.SimpleWebViewClient;
 using Google.Android.Material.Button;
 using Humanizer;
 using System.Text.Json;
@@ -55,10 +55,8 @@ namespace Footprint
             live = view.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.JavaScriptEnabled = true;
             live.AddJavascriptInterface(new JavascriptInterface(), "CS");
-            MyClient client = new();
             var last = Database.Connection.Table<Point>().LastOrDefault();
-            client.PageFinished += (_, _) => PointHandler(last, last);
-            live.SetWebViewClient(client);
+            live.SetWebViewClient(new SimpleWebViewClient(pageFinishedCallback: (_, _) => PointHandler(last, last)));
             live.LoadUrl("file:///android_asset/www/live.html");
         }
 

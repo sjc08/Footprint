@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Asjc.Android.ServiceHelper" Version="1.3.3" />
+    <PackageReference Include="Asjc.Android.SimpleWebViewClient" Version="1.3.0" />
     <PackageReference Include="Asjc.JsonConfig" Version="1.2.0" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Humanizer" Version="3.0.0-beta.54" />
