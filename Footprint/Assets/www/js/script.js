@@ -22,10 +22,11 @@ switch (CS.Map().split('.')[0]) {
         });
         switch (CS.Map().split('.')[1]) {
             case 'colorful':
-                Promise.all([
-                    fetch('world.geo.json').then(d => d.json()),
-                    fetch('national-colors.json').then(d => d.json())
-                ]).then(function onLoad([world, colors]) {
+                var world, colors;
+                $.when(
+                    $.getJSON('world.geo.json', d => world = d),
+                    $.getJSON('national-colors.json', d => colors = d)
+                ).then(() => {
                     const polygonLayer = new L7.PolygonLayer()
                         .source(world)
                         .color('name', value => {

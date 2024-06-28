@@ -65,7 +65,7 @@
             JSON.parse(CS.Points()).forEach(i => {
                 points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
             });
-            const pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
+            pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
                 .source(convert(points, 'MultiPoint'))
                 .size(0.5)
                 .color('#080298');
@@ -82,12 +82,15 @@
             });
         });
 
+        var pointLayer, markerLayer, lineLayer;
+
         function draw() {
-            scene.removeAllLayer();
-            scene.removeAllMarkers();
+            scene.removeLayer(pointLayer);
+            scene.removeLayer(markerLayer);
+            scene.removeLayer(lineLayer);
             var path = [];
             // markers
-            const markerLayer = new L7.MarkerLayer();
+            markerLayer = new L7.MarkerLayer();
             JSON.parse(CS.Points()).forEach(i => {
                 var time = moment(i.Time);
                 var duration = moment.duration(i.Duration);
@@ -104,7 +107,7 @@
             });
             scene.addMarkerLayer(markerLayer);
             // line
-            const lineLayer = new L7.LineLayer({ autoFit: true })
+            lineLayer = new L7.LineLayer({ autoFit: true })
                 .source(convert(path, 'LineString'))
                 .size(3)
                 .shape('line')

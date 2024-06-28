@@ -53,6 +53,7 @@ namespace Footprint
             }
             connector?.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
             live = view.FindViewById<WebView>(Resource.Id.liveView);
+            live.Settings.AllowUniversalAccessFromFileURLs = true;
             live.Settings.JavaScriptEnabled = true;
             live.AddJavascriptInterface(new JavascriptInterface(), "CS");
             var last = Database.Connection.Table<Point>().LastOrDefault();
