@@ -13,7 +13,7 @@ switch (CS.Map()) {
             })
         });
         break;
-    case 'offline':
+    case 'mapbox':
         scene = new L7.Scene({
             id: 'map',
             map: new L7.Mapbox({
@@ -21,25 +21,10 @@ switch (CS.Map()) {
             })
         });
         switch (CS.Style()) {
-            case 'colorful':
-                var world, colors;
-                $.when(
-                    $.getJSON('world.geo.json', d => world = d),
-                    $.getJSON('national-colors.json', d => colors = d)
-                ).then(() => {
-                    const polygonLayer = new L7.PolygonLayer()
-                        .source(world)
-                        .color('name', value => {
-                            for (const i of colors) {
-                                if (i.country.toLowerCase() == value.toLowerCase())
-                                    return i.colors.primary[0];
-                            }
-                            return 'gray';
-                        })
-                        .shape('fill')
-                    scene.addLayer(polygonLayer);
+            case 'outline':
+                $.getJSON('world.geo.json', d => {
                     const lineLayer = new L7.LineLayer()
-                        .source(world)
+                        .source(d)
                         .color('gray')
                         .size(0.3)
                     scene.addLayer(lineLayer);
