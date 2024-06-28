@@ -16,4 +16,5 @@
 	<string name="info">停留 %1$s\n[ %2$s ]\n坐标：%3$.5f,%4$.5f\n精度：%5$.1f m\n海拔：%6$.1f m\n方向：%7$.1f°\n速度：%8$.1f km/h</string>
 	<string name="map">地图</string>
 	<string name="style">主题</string>
+	<string name="footprint_data">足迹（数据）</string>
 </resources>
