@@ -30,14 +30,14 @@ namespace Footprint
         {
             base.OnStart();
 
-            connector?.WhenConnected(s => s.OnPoint += PointHandler);
+            connector?.WhenConnected(s => s.LocationChanged += PointHandler);
         }
 
         public override void OnStop()
         {
             base.OnStop();
 
-            connector?.WhenConnected(s => s.OnPoint -= PointHandler);
+            connector?.WhenConnected(s => s.LocationChanged -= PointHandler);
         }
 
         public override void OnViewCreated(View? view, Bundle? savedInstanceState)

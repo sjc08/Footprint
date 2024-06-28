@@ -17,7 +17,7 @@ namespace Footprint
         public const string CHANNEL_NAME = "Default Channel";
         public const int NOTIFICATION_ID = 10000;
 
-        public event Action<Point, Point>? OnPoint;
+        public event Action<Point, Point>? LocationChanged;
 
         private LocationManager? locationManager;
 
@@ -83,16 +83,22 @@ namespace Footprint
             Log.Debug(nameof(LocationService), "Location updated.");
             Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
             Point currentPoint = new(location);
-            // If it's the first record or the location has changed.
+            // Determine if it's the first record and if the location has changed.
             if (lastPoint == default
                 || location.DistanceTo(lastPoint) > 50
                 || Math.Abs(currentPoint.Altitude - lastPoint.Altitude) > 50)
+            {
+                // Insert data.
                 Database.Connection.Insert(currentPoint);
-            // Update the duration of stay.
-            Point recordedPoint = Database.Connection.Table<Point>().Last();
-            recordedPoint.Duration = currentPoint.Time - recordedPoint.Time;
-            Database.Connection.Update(recordedPoint);
-            OnPoint?.Invoke(recordedPoint, currentPoint);
+                LocationChanged?.Invoke(currentPoint, currentPoint);
+            }
+            else
+            {
+                // Update data.
+                lastPoint.Duration = currentPoint.Time - lastPoint.Time;
+                Database.Connection.Update(lastPoint);
+                LocationChanged?.Invoke(lastPoint, currentPoint);
+            }
             Log.Debug(nameof(LocationService), $"{stopwatch.ElapsedMilliseconds} ms");
         }
 
