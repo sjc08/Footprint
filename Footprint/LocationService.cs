@@ -78,28 +78,29 @@ namespace Footprint
         private readonly Stopwatch stopwatch = new();
 
         public Point? LastPoint { get; private set; } = Database.Connection.Table<Point>().LastOrDefault();
+        public Point? CurrentPoint { get; private set; }
 
         public void OnLocationChanged(Location location)
         {
             stopwatch.Restart();
             Log.Debug(nameof(LocationService), "Location updated.");
-            Point currentPoint = new(location);
+            CurrentPoint = new(location);
             // Determine if it's the first record and if the location has changed.
             if (LastPoint == default
                 || location.DistanceTo(LastPoint) > 50
-                || Math.Abs(currentPoint.Altitude - LastPoint.Altitude) > 50)
+                || Math.Abs(CurrentPoint.Altitude - LastPoint.Altitude) > 50)
             {
                 // Insert data.
-                Database.Connection.Insert(currentPoint);
-                LastPoint = currentPoint;
-                LocationChanged?.Invoke(currentPoint, currentPoint);
+                Database.Connection.Insert(CurrentPoint);
+                LastPoint = CurrentPoint;
+                LocationChanged?.Invoke(CurrentPoint, CurrentPoint);
             }
             else
             {
                 // Update data.
-                LastPoint.Duration = currentPoint.Time - LastPoint.Time;
+                LastPoint.Duration = CurrentPoint.Time - LastPoint.Time;
                 Database.Connection.Update(LastPoint);
-                LocationChanged?.Invoke(LastPoint, currentPoint);
+                LocationChanged?.Invoke(LastPoint, CurrentPoint);
             }
             Log.Debug(nameof(LocationService), $"{stopwatch.ElapsedMilliseconds} ms");
         }

@@ -58,11 +58,7 @@ namespace Footprint
             live.AddJavascriptInterface(new JavascriptInterface(), "CS");
             live.SetWebViewClient(new SimpleWebViewClient(pageFinishedCallback: (_, _) =>
             {
-                connector?.WhenConnected(s =>
-                {
-                    var p = s.LastPoint;
-                    PointHandler(p, p);
-                });
+                connector?.WhenConnected(s => PointHandler(s.LastPoint, s.CurrentPoint));
             }));
             live.LoadUrl("file:///android_asset/www/live.html");
         }
