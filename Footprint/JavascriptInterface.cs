@@ -8,7 +8,11 @@ namespace Footprint
     {
         [JavascriptInterface]
         [Export]
-        public string Map() => Settings.Instance.Map;
+        public string Map() => Settings.Instance.Map.ToLower();
+
+        [JavascriptInterface]
+        [Export]
+        public string Style() => Settings.Instance.Style.ToLower();
 
         [JavascriptInterface]
         [Export]

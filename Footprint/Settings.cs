@@ -8,6 +8,8 @@ namespace Footprint
 
         protected override string DefaultPath => $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/Settings.json";
 
-        public string Map { get; set; } = "AMap.normal";
+        public string Map { get; set; } = "AMap";
+
+        public string Style { get; set; } = "normal";
     }
 }

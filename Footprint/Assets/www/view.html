@@ -41,10 +41,14 @@
                         <label for="time">时间</label>
                         <input id="time" class="form-control">
                     </div>
-                    <button class="btn btn-primary mb-15" onclick="draw()">确定</button>
+                    <button class="btn btn-primary mb-15" onclick="find()">确定</button>
                     <div class="alert alert-primary mb-15">
                         找到 <span id="count">-</span> 个点
                     </div>
+                </div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-content">
+                    <button class="btn btn-rounded mb-15" onclick="show()">亮度图</button>
                 </div>
             </div>
         </div>
@@ -60,16 +64,6 @@
         scene.on('loaded', () => {
             const mapTheme = new L7.MapTheme();
             scene.addControl(mapTheme);
-            // points
-            var points = []
-            JSON.parse(CS.Points()).forEach(i => {
-                points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
-            });
-            pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
-                .source(convert(points, 'MultiPoint'))
-                .size(0.5)
-                .color('#080298');
-            scene.addLayer(pointLayer);
         });
 
         $(function () {
@@ -84,7 +78,7 @@
 
         var pointLayer, markerLayer, lineLayer;
 
-        function draw() {
+        function find() {
             scene.removeLayer(pointLayer);
             scene.removeLayer(markerLayer);
             scene.removeLayer(lineLayer);
@@ -124,6 +118,19 @@
                 });
             scene.addLayer(lineLayer);
             $('#count').text(path.length);
+        }
+
+        function show() {
+            // points
+            var points = []
+            JSON.parse(CS.Points()).forEach(i => {
+                points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
+            });
+            pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
+                .source(convert(points, 'MultiPoint'))
+                .size(0.5)
+                .color('#080298');
+            scene.addLayer(pointLayer);
         }
 
         function convert(coordinates, type) {

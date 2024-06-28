@@ -3,24 +3,24 @@ window._AMapSecurityConfig = {
 }
 
 var scene;
-switch (CS.Map().split('.')[0]) {
-    case 'AMap':
+switch (CS.Map()) {
+    case 'amap':
         scene = new L7.Scene({
             id: 'map',
             map: new L7.GaodeMap({
-                style: CS.Map().split('.')[1],
+                style: CS.Style(),
                 token: '3b9a8c37d8a26809a658bb8c59ce17a4'
             })
         });
         break;
-    case 'Offline':
+    case 'offline':
         scene = new L7.Scene({
             id: 'map',
             map: new L7.Mapbox({
                 style: 'blank'
             })
         });
-        switch (CS.Map().split('.')[1]) {
+        switch (CS.Style()) {
             case 'colorful':
                 var world, colors;
                 $.when(
