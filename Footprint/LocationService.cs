@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Util;
 using AndroidX.Core.Content;
 using Asjc.Android.ServiceHelper;
+using System.Diagnostics;
 
 namespace Footprint
 {
@@ -74,8 +75,11 @@ namespace Footprint
             }
         }
 
+        private readonly Stopwatch stopwatch = new();
+
         public void OnLocationChanged(Location location)
         {
+            stopwatch.Restart();
             Log.Debug(nameof(LocationService), "Location updated.");
             Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
             Point currentPoint = new(location);
@@ -89,6 +93,7 @@ namespace Footprint
             recordedPoint.Duration = currentPoint.Time - recordedPoint.Time;
             Database.Connection.Update(recordedPoint);
             OnPoint?.Invoke(recordedPoint, currentPoint);
+            Log.Debug(nameof(LocationService), $"{stopwatch.ElapsedMilliseconds} ms");
         }
 
         public void OnProviderDisabled(string provider) { }
