@@ -76,12 +76,12 @@ namespace Footprint
         }
 
         private readonly Stopwatch stopwatch = new();
+        private Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
 
         public void OnLocationChanged(Location location)
         {
             stopwatch.Restart();
             Log.Debug(nameof(LocationService), "Location updated.");
-            Point? lastPoint = Database.Connection.Table<Point>().LastOrDefault();
             Point currentPoint = new(location);
             // Determine if it's the first record and if the location has changed.
             if (lastPoint == default
@@ -90,6 +90,7 @@ namespace Footprint
             {
                 // Insert data.
                 Database.Connection.Insert(currentPoint);
+                lastPoint = currentPoint;
                 LocationChanged?.Invoke(currentPoint, currentPoint);
             }
             else
