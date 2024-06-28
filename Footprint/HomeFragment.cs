@@ -56,8 +56,14 @@ namespace Footprint
             live.Settings.AllowUniversalAccessFromFileURLs = true;
             live.Settings.JavaScriptEnabled = true;
             live.AddJavascriptInterface(new JavascriptInterface(), "CS");
-            var last = Database.Connection.Table<Point>().LastOrDefault();
-            live.SetWebViewClient(new SimpleWebViewClient(pageFinishedCallback: (_, _) => PointHandler(last, last)));
+            live.SetWebViewClient(new SimpleWebViewClient(pageFinishedCallback: (_, _) =>
+            {
+                connector?.WhenConnected(s =>
+                {
+                    var p = s.LastPoint;
+                    PointHandler(p, p);
+                });
+            }));
             live.LoadUrl("file:///android_asset/www/live.html");
         }
 
