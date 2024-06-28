@@ -7,11 +7,13 @@
     <title>Footprint</title>
     <link rel="stylesheet" href="css/halfmoon.min.css">
     <link rel="stylesheet" href="css/daterangepicker.min.css" />
+    <link rel="stylesheet" href="css/mapbox-gl.css" />
     <script src="js/halfmoon.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/moment-with-locales.min.js"></script>
     <script src="js/daterangepicker.min.js"></script>
     <script src="js/coordtransform.min.js"></script>
+    <script src="js/mapbox-gl.js"></script>
     <script src="js/l7.js"></script>
 </head>
 
@@ -63,7 +65,7 @@
             JSON.parse(CS.Points()).forEach(i => {
                 points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
             });
-            const pointLayer = new L7.PointLayer({ blend: 'additive' })
+            const pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
                 .source(convert(points, 'MultiPoint'))
                 .size(0.5)
                 .color('#080298');

@@ -8,7 +8,7 @@ namespace Footprint
     {
         [JavascriptInterface]
         [Export]
-        public string Style() => Settings.Instance.MapTheme;
+        public string Map() => Settings.Instance.Map;
 
         [JavascriptInterface]
         [Export]
