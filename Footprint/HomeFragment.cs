@@ -74,7 +74,7 @@ namespace Footprint
                 Activity.FindViewById<TextView>(Resource.Id.textView).Text = GetString(Resource.String.info,
                 [
                     recPt.Duration.Milliseconds().Humanize(),
-                    new DateTime(1970,1,1,0,0,0).AddMilliseconds(curPt.Time).ToLocalTime().ToString(),
+                    curPt.TimeDT.ToString(),
                     curPt.Latitude,
                     curPt.Longitude,
                     curPt.Accuracy,

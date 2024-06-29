@@ -1,4 +1,6 @@
 ﻿using Android.Webkit;
+using Asjc.Natex;
+using Asjc.Natex.Matchers;
 using Java.Interop;
 using System.Text.Json;
 
@@ -16,6 +18,14 @@ namespace Footprint
 
         [JavascriptInterface]
         [Export]
-        public string Points() => JsonSerializer.Serialize(Database.Connection.Table<Point>().ToList());
+        public string Points(string pattern)
+        {
+            Natex natex = new(pattern);
+            natex.Matchers.Get<PropertyMatcher>().DefaultPaths.Add(["TimeDT"]);
+            natex.Matchers.Set<ComparisonMatcher>(new MyComparisonMatcher());
+            natex.Matchers.Set<RangeMatcher>(new MyRangeMatcher());
+            var s = Database.Connection.Table<Point>().AsParallel().AsOrdered().Where(natex.Match);
+            return JsonSerializer.Serialize(s);
+        }
     }
 }

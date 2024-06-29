@@ -21,6 +21,9 @@ namespace Footprint
         [PrimaryKey]
         public long Time { get; set; }
 
+        [Ignore]
+        public DateTime TimeDT => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(Time);
+
         public long Duration { get; set; }
 
         public double Latitude { get; set; }

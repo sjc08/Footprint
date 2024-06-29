@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -6,12 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
     <link rel="stylesheet" href="css/halfmoon.min.css">
-    <link rel="stylesheet" href="css/daterangepicker.min.css" />
     <link rel="stylesheet" href="css/mapbox-gl.css" />
     <script src="js/halfmoon.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/moment-with-locales.min.js"></script>
-    <script src="js/daterangepicker.min.js"></script>
     <script src="js/coordtransform.min.js"></script>
     <script src="js/mapbox-gl.js"></script>
     <script src="js/l7.js"></script>
@@ -38,17 +36,23 @@
                 <div class="sidebar-divider"></div>
                 <div class="sidebar-content">
                     <div class="mb-15">
-                        <label for="time">时间</label>
-                        <input id="time" class="form-control">
+                        <label for="filter">筛选</label>
+                        <input id="filter" class="form-control" value="&lt;Today&gt;">
                     </div>
-                    <button class="btn btn-primary mb-15" onclick="find()">确定</button>
+                    <div class="mb-15">
+                        <div class="custom-radio d-inline-block mr-10">
+                            <input type="radio" name="radio-set" id="radio-1" value="路线" checked>
+                            <label for="radio-1">路线</label>
+                        </div>
+                        <div class="custom-radio d-inline-block mr-10">
+                            <input type="radio" name="radio-set" id="radio-2" value="亮度图">
+                            <label for="radio-2">亮度图</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mb-15" onclick="search()">确定</button>
                     <div class="alert alert-primary mb-15">
                         找到 <span id="count">-</span> 个点
                     </div>
-                </div>
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-content">
-                    <button class="btn btn-rounded mb-15" onclick="show()">亮度图</button>
                 </div>
             </div>
         </div>
@@ -66,71 +70,62 @@
             scene.addControl(mapTheme);
         });
 
-        $(function () {
-            $('#time').daterangepicker({
-                locale: {
-                    format: 'Y/M/D',
-                    applyLabel: '应用',
-                    cancelLabel: '取消'
-                }
-            });
-        });
-
         var pointLayer, markerLayer, lineLayer;
 
-        function find() {
-            scene.removeLayer(pointLayer);
-            scene.removeLayer(markerLayer);
-            scene.removeLayer(lineLayer);
-            var path = [];
-            // markers
-            markerLayer = new L7.MarkerLayer();
-            JSON.parse(CS.Points()).forEach(i => {
-                var time = moment(i.Time);
-                var duration = moment.duration(i.Duration);
-                var position = coordtransform.wgs84togcj02(i.Longitude, i.Latitude);
-                // check time
-                var drp = $('#time').data('daterangepicker');
-                if (time.isBetween(drp.startDate, drp.endDate)) {
-                    path.push(position);
-                    if (duration.asMinutes() >= 30) {
-                        const marker = new L7.Marker().setLnglat(position);
-                        markerLayer.addMarker(marker);
-                    }
-                }
-            });
-            scene.addMarkerLayer(markerLayer);
-            // line
-            lineLayer = new L7.LineLayer({ autoFit: true })
-                .source(convert(path, 'LineString'))
-                .size(3)
-                .shape('line')
-                .texture('arrow')
-                .color('#00ABA9')
-                .animate({
-                    duration: 5,
-                    interval: 1,
-                    trailLength: 2
-                })
-                .style({
-                    lineTexture: true,
-                    iconStep: 10,
-                });
-            scene.addLayer(lineLayer);
-            $('#count').text(path.length);
-        }
-
-        function show() {
-            // points
-            var points = []
-            JSON.parse(CS.Points()).forEach(i => {
-                points.push(coordtransform.wgs84togcj02(i.Longitude, i.Latitude));
-            });
-            pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
-                .source(convert(points, 'MultiPoint'))
-                .size(0.5)
-                .color('#080298');
-            scene.addLayer(pointLayer);
+        function search() {
+            if (pointLayer != null)
+                scene.removeLayer(pointLayer);
+            if (markerLayer != null)
+                scene.removeLayer(markerLayer);
+            if (lineLayer != null)
+                scene.removeLayer(lineLayer);
+            const checked = $("input[type='radio']:checked").val();
+            const points = JSON.parse(CS.Points($('#filter').val()));
+            var coordinates = [];
+            points.forEach(p => {
+                const coordinate = coordtransform.wgs84togcj02(p.Longitude, p.Latitude);
+                p.Coordinate = coordinate;
+                coordinates.push(coordinate);
+            })
+            $('#count').text(points.length);
+            switch (checked) {
+                case '路线':
+                    // markers
+                    markerLayer = new L7.MarkerLayer();
+                    points.forEach(i => {
+                        var duration = moment.duration(i.Duration);
+                        if (duration.asMinutes() >= 30) {
+                            const marker = new L7.Marker().setLnglat(i.Coordinate);
+                            markerLayer.addMarker(marker);
+                        }
+                    });
+                    scene.addMarkerLayer(markerLayer);
+                    // line
+                    lineLayer = new L7.LineLayer({ autoFit: true })
+                        .source(convert(coordinates, 'LineString'))
+                        .size(3)
+                        .shape('line')
+                        .texture('arrow')
+                        .color('#00ABA9')
+                        .animate({
+                            duration: 5,
+                            interval: 1,
+                            trailLength: 2
+                        })
+                        .style({
+                            lineTexture: true,
+                            iconStep: 10,
+                        });
+                    scene.addLayer(lineLayer);
+                    break;
+                case '亮度图':
+                    pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
+                        .source(convert(coordinates, 'MultiPoint'))
+                        .size(0.5)
+                        .color('#080298');
+                    scene.addLayer(pointLayer);
+                    break;
+            }
         }
 
         function convert(coordinates, type) {
