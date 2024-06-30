@@ -41,12 +41,20 @@
                     </div>
                     <div class="mb-15">
                         <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-1" value="路线" checked>
+                            <input type="radio" name="radio-set" id="radio-1" value="route" checked>
                             <label for="radio-1">路线</label>
                         </div>
                         <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-2" value="亮度图">
+                            <input type="radio" name="radio-set" id="radio-2" value="dot">
                             <label for="radio-2">亮度图</label>
+                        </div>
+                        <div class="custom-radio d-inline-block mr-10">
+                            <input type="radio" name="radio-set" id="radio-3" value="bubble">
+                            <label for="radio-3">气泡图</label>
+                        </div>
+                        <div class="custom-radio d-inline-block mr-10">
+                            <input type="radio" name="radio-set" id="radio-4" value="heatmap">
+                            <label for="radio-4">热力图</label>
                         </div>
                     </div>
                     <button class="btn btn-primary mb-15" onclick="search()">确定</button>
@@ -70,7 +78,7 @@
             scene.addControl(mapTheme);
         });
 
-        var pointLayer, markerLayer, lineLayer;
+        var pointLayer, markerLayer, lineLayer, heatmapLayer;
 
         function search() {
             if (pointLayer != null)
@@ -81,28 +89,28 @@
                 scene.removeLayer(lineLayer);
             const checked = $("input[type='radio']:checked").val();
             const points = JSON.parse(CS.Points($('#filter').val()));
-            var coordinates = [];
-            points.forEach(p => {
-                const coordinate = coordtransform.wgs84togcj02(p.Longitude, p.Latitude);
-                p.Coordinate = coordinate;
-                coordinates.push(coordinate);
-            })
             $('#count').text(points.length);
             switch (checked) {
-                case '路线':
+                case 'route':
+                    var coords = [];
+                    points.forEach(p => {
+                        const coord = coordtransform.wgs84togcj02(p.Longitude, p.Latitude);
+                        p.Coord = coord;
+                        coords.push(coord);
+                    });
                     // markers
                     markerLayer = new L7.MarkerLayer();
                     points.forEach(i => {
                         var duration = moment.duration(i.Duration);
                         if (duration.asMinutes() >= 30) {
-                            const marker = new L7.Marker().setLnglat(i.Coordinate);
+                            const marker = new L7.Marker().setLnglat(i.Coord);
                             markerLayer.addMarker(marker);
                         }
                     });
                     scene.addMarkerLayer(markerLayer);
                     // line
                     lineLayer = new L7.LineLayer({ autoFit: true })
-                        .source(convert(coordinates, 'LineString'))
+                        .source(convert1(coords, 'LineString'))
                         .size(3)
                         .shape('line')
                         .texture('arrow')
@@ -118,18 +126,48 @@
                         });
                     scene.addLayer(lineLayer);
                     break;
-                case '亮度图':
+                case 'dot':
+                    // dots
                     pointLayer = new L7.PointLayer({ autoFit: true, blend: 'additive' })
-                        .source(convert(coordinates, 'MultiPoint'))
+                        .source(convert2(points))
                         .size(0.5)
                         .color('#080298');
                     scene.addLayer(pointLayer);
                     break;
+                case 'bubble':
+                    // bubbles
+                    pointLayer = new L7.PointLayer({ autoFit: true })
+                        .source(convert2(points))
+                        .shape('circle')
+                        .size('duration', d => Math.min(15, d.asMinutes() / 2))
+                        .color('#5CCEA1')
+                        .style({
+                            opacity: 0.3,
+                            strokeWidth: 1,
+                        });
+                    scene.addLayer(pointLayer);
+                    break;
+                case 'heatmap':
+                    // heatmap
+                    heatmapLayer = new L7.HeatmapLayer({ autoFit: true })
+                        .source(convert2(points))
+                        .shape('heatmap')
+                        .size('duration', d => Math.min(1, d.asMinutes() / 30))
+                        .style({
+                            intensity: 2,
+                            radius: 15,
+                            rampColors: {
+                                colors: ['#FF4818', '#F7B74A', '#FFF598', '#91EABC', '#2EA9A1', '#206C7C'].reverse(),
+                                positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0],
+                            }
+                        });
+                    scene.addLayer(heatmapLayer);
+                    break;
             }
         }
 
-        function convert(coordinates, type) {
-            const geoJSON = {
+        function convert1(coords, type) {
+            return {
                 type: 'FeatureCollection',
                 features: [
                     {
@@ -137,12 +175,33 @@
                         properties: {},
                         geometry: {
                             type: type,
-                            coordinates: coordinates
+                            coordinates: coords
                         }
                     }
                 ]
             };
-            return geoJSON;
+        }
+
+        function convert2(data) {
+            const features = data.map(i => ({
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: coordtransform.wgs84togcj02(i.Longitude, i.Latitude)
+                },
+                properties: {
+                    time: i.Time,
+                    duration: moment.duration(i.Duration),
+                    accuracy: i.Accuracy,
+                    altitude: i.Altitude,
+                    bearing: i.Bearing,
+                    speed: i.Speed
+                }
+            }));
+            return {
+                type: "FeatureCollection",
+                features: features
+            };
         }
     </script>
 </body>

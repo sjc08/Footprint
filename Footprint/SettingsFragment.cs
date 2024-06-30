@@ -2,6 +2,7 @@
 using Android.Views;
 using AndroidX.DocumentFile.Provider;
 using CsvHelper;
+using Humanizer;
 using System.Globalization;
 
 namespace Footprint
@@ -36,7 +37,11 @@ namespace Footprint
                                                                .SetNegativeButton("否", delegate { })
                                                                .Show();
             };
-            view.FindViewById<TextView>(Resource.Id.dataCount).Text = $"共有 {Database.Connection.Table<Point>().Count()} 条数据";
+            view.FindViewById<TextView>(Resource.Id.dataSummary).Text = GetString(Resource.String.data_summary,
+            [
+                Database.Connection.Table<Point>().Count(),
+                new FileInfo(Database.Connection.DatabasePath).Length.Bytes().Humanize()
+            ]);
             var map = view.FindViewById<EditText>(Resource.Id.map);
             map.Text = Settings.Instance.Map;
             map.TextChanged += (_, e) => Settings.Instance.Map = e.Text.ToString();

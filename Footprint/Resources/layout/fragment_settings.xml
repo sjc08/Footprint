@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/footprint_data"
+        android:text="@string/title_data"
         style="@style/TextAppearance.AppCompat.Title"
         android:paddingBottom="15dp" />
     <LinearLayout
@@ -39,7 +39,13 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/dataCount"
+        android:id="@+id/dataSummary"
+        android:paddingBottom="15dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_interface"
+        style="@style/TextAppearance.AppCompat.Title"
         android:paddingBottom="15dp" />
     <LinearLayout
         android:layout_width="match_parent"

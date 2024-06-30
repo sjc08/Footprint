@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.alexsjc.footprint</ApplicationId>
     <ApplicationVersion>5</ApplicationVersion>
-    <ApplicationDisplayVersion>1.5</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion>1.5.1</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
