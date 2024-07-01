@@ -75,14 +75,11 @@ namespace Footprint
             }
         }
 
-        private readonly Stopwatch stopwatch = new();
-
         public Point? LastPoint { get; private set; } = Database.Connection.Table<Point>().LastOrDefault();
         public Point? CurrentPoint { get; private set; }
 
         public void OnLocationChanged(Location location)
         {
-            stopwatch.Restart();
             Log.Debug(nameof(LocationService), "Location updated.");
             CurrentPoint = new(location);
             // Determine if it's the first record and if the location has changed.
@@ -102,7 +99,6 @@ namespace Footprint
                 Database.Connection.Update(LastPoint);
                 LocationChanged?.Invoke(LastPoint, CurrentPoint);
             }
-            Log.Debug(nameof(LocationService), $"{stopwatch.ElapsedMilliseconds} ms");
         }
 
         public void OnProviderDisabled(string provider) { }

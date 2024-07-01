@@ -36,11 +36,11 @@
                 var curPos = coordtransform.wgs84togcj02(curPt.Longitude, curPt.Latitude);
                 const curImg = document.createElement('img');
                 curImg.src = 'img/circle.svg';
-                var marker2 = new L7.Marker({
+                const marker = new L7.Marker({
                     element: curImg,
                     anchor: 'center'
                 }).setLnglat(curPos);
-                scene.addMarker(marker2);
+                scene.addMarker(marker);
                 scene.panTo(curPos);
             }
         }

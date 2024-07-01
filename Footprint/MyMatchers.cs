@@ -46,13 +46,13 @@ namespace Footprint
 
     public class MyRangeMatcher : RangeMatcher
     {
-        public override bool? Match(IComparable value, Data data, Natex natex)
+        public override bool? Match(Natex natex, Data data, IComparable value)
         {
             var c1 = MyClass.CompareDate(data.Min, value);
             var c2 = MyClass.CompareDate(data.Max, value);
             if (c1 != null && c2 != null)
                 return c1 >= 0 && c2 <= 0;
-            return base.Match(value, data, natex);
+            return base.Match(natex, data, value);
         }
     }
 

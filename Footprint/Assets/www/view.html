@@ -61,6 +61,10 @@
                     <div class="alert alert-primary mb-15">
                         找到 <span id="count">-</span> 个点
                     </div>
+                    <div class="custom-switch">
+                        <input type="checkbox" id="switch-1" checked>
+                        <label for="switch-1">显示当前位置</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +82,31 @@
             scene.addControl(mapTheme);
         });
 
+        $("#switch-1").change(() => {
+            if (!this.checked) {
+                if (locMarkder != null) {
+                    locMarkder.remove();
+                }
+            }
+        });
+
+        var locMarkder;
+
+        function update(location) {
+            if (locMarkder != null)
+                locMarkder.remove();
+            if ($("#switch-1").prop('checked')) {
+                var pos = coordtransform.wgs84togcj02(location.Longitude, location.Latitude);
+                const img = document.createElement('img');
+                img.src = 'img/circle.svg';
+                locMarkder = new L7.Marker({
+                    element: img,
+                    anchor: 'center'
+                }).setLnglat(pos);
+                scene.addMarker(locMarkder);
+            }
+        }
+
         var pointLayer, markerLayer, lineLayer, heatmapLayer;
 
         function search() {
@@ -86,6 +115,8 @@
             if (markerLayer != null)
                 scene.removeLayer(markerLayer);
             if (lineLayer != null)
+                scene.removeLayer(lineLayer);
+            if (heatmapLayer != null)
                 scene.removeLayer(lineLayer);
             const checked = $("input[type='radio']:checked").val();
             const points = JSON.parse(CS.Points($('#filter').val()));

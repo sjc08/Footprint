@@ -23,7 +23,7 @@ namespace Footprint
         {
             base.OnCreate(savedInstanceState);
 
-            connector = ((MainActivity)Activity).Connector;
+            connector = ((MainActivity?)Activity)?.Connector;
         }
 
         public override void OnStart()

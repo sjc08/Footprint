@@ -23,11 +23,11 @@ switch (CS.Map()) {
         switch (CS.Style()) {
             case 'outline':
                 $.getJSON('world.geo.json', d => {
-                    const lineLayer = new L7.LineLayer()
+                    const mapLayer = new L7.LineLayer()
                         .source(d)
                         .color('gray')
                         .size(0.3)
-                    scene.addLayer(lineLayer);
+                    scene.addLayer(mapLayer);
                 });
                 break;
         }
