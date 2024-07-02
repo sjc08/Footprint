@@ -24,7 +24,7 @@ namespace Footprint
 
         [Ignore]
         [JsonIgnore]
-        public DateTime TimeDT => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(Time);
+        public DateTime TimeDT => new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(Time).ToLocalTime();
 
         public long Duration { get; set; }
 
