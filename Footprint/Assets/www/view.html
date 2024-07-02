@@ -117,7 +117,7 @@
             if (lineLayer != null)
                 scene.removeLayer(lineLayer);
             if (heatmapLayer != null)
-                scene.removeLayer(lineLayer);
+                scene.removeLayer(heatmapLayer);
             const checked = $("input[type='radio']:checked").val();
             const points = JSON.parse(CS.Points($('#filter').val()));
             $('#count').text(points.length);

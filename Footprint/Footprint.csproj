@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.alexsjc.footprint</ApplicationId>
-    <ApplicationVersion>5</ApplicationVersion>
-    <ApplicationDisplayVersion>1.5.3</ApplicationDisplayVersion>
+    <ApplicationVersion>6</ApplicationVersion>
+    <ApplicationDisplayVersion>1.5.4</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
