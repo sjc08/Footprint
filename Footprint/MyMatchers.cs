@@ -61,7 +61,7 @@ namespace Footprint
         public static int? CompareDate(string input, IComparable value)
         {
             if (value is DateTime dt1
-                && input.ConvertTo(typeof(DateTime), out var result)
+                && input.TryChangeType(typeof(DateTime), out var result)
                 && result is DateTime dt2)
             {
                 if (dt2 is { Hour: 0, Minute: 0, Second: 0 })
