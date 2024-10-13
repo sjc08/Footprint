@@ -24,8 +24,8 @@ namespace Footprint
             natex.Matchers.Get<PropertyMatcher>().DefaultPaths.Add(["TimeDT"]);
             natex.Matchers.Set<ComparisonMatcher>(new MyComparisonMatcher());
             natex.Matchers.Set<RangeMatcher>(new MyRangeMatcher());
-            var s = Database.Connection.Table<Point>().AsParallel().AsOrdered().Where(natex.Match);
-            return JsonSerializer.Serialize(s);
+            var points = Database.Connection.Table<Point>().AsParallel().AsOrdered().Where(natex.Match);
+            return JsonSerializer.Serialize(points);
         }
     }
 }
