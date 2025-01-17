@@ -1,6 +1,5 @@
 ﻿using Android.Locations;
 using SQLite;
-using System.Text.Json.Serialization;
 
 namespace Footprint
 {
@@ -23,8 +22,18 @@ namespace Footprint
         public long Time { get; set; }
 
         [Ignore]
-        [JsonIgnore]
-        public DateTime TimeDT => new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(Time).ToLocalTime();
+        [System.Text.Json.Serialization.JsonIgnore]
+        [CsvHelper.Configuration.Attributes.Ignore]
+        public DateTime TimeDT
+        {
+            get
+            {
+                timeDT ??= new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(Time).ToLocalTime();
+                return timeDT.Value;
+            }
+        }
+
+        private DateTime? timeDT;
 
         public long Duration { get; set; }
 
