@@ -88,7 +88,7 @@ namespace Footprint
                 || Math.Abs(CurrentPoint.Altitude - LastPoint.Altitude) > 50)
             {
                 // Insert data.
-                Database.Connection.Insert(CurrentPoint);
+                Database.Connection.InsertOrReplace(CurrentPoint);
                 LastPoint = CurrentPoint;
                 LocationChanged?.Invoke(CurrentPoint, CurrentPoint);
             }
