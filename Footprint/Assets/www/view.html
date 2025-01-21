@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footprint</title>
     <link rel="stylesheet" href="css/halfmoon.min.css">
-    <link rel="stylesheet" href="css/mapbox-gl.css" />
-    <script src="js/halfmoon.min.js"></script>
+    <link rel="stylesheet" href="fonts/remixicon.css">
+    <link rel="stylesheet" href="css/mapbox-gl.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/moment-with-locales.min.js"></script>
     <script src="js/coordtransform.min.js"></script>
@@ -16,70 +17,58 @@
 </head>
 
 <body>
-    <div class="page-wrapper with-navbar with-sidebar">
-        <nav class="navbar">
-            <div class="navbar-content">
-                <button class="btn btn-action" onclick="halfmoon.toggleSidebar()">
-                    <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-                            <path
-                                d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
-                        </svg>
-                    </i>
-                </button>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="main-offcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">选项</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="mb-3">
+                <label for="filter" class="form-label">筛选</label>
+                <input class="form-control" id="filter" placeholder="{Today}" value="{Today}">
             </div>
-            <a href="#" class="navbar-brand">足迹</a>
-        </nav>
-        <div class="sidebar">
-            <div class="sidebar-menu">
-                <h5 class="sidebar-title">菜单</h5>
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-content">
-                    <div class="mb-15">
-                        <label for="filter">筛选</label>
-                        <input id="filter" class="form-control" value="{Today}">
-                    </div>
-                    <div class="mb-15">
-                        <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-1" value="route" checked>
-                            <label for="radio-1">路线</label>
-                        </div>
-                        <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-2" value="dot">
-                            <label for="radio-2">亮度图</label>
-                        </div>
-                        <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-3" value="bubble">
-                            <label for="radio-3">气泡图</label>
-                        </div>
-                        <div class="custom-radio d-inline-block mr-10">
-                            <input type="radio" name="radio-set" id="radio-4" value="heatmap">
-                            <label for="radio-4">热力图</label>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary mb-15" onclick="search()">确定</button>
-                    <div class="alert alert-primary mb-15">
-                        找到 <span id="count">-</span> 个点
-                    </div>
-                    <div class="custom-switch">
-                        <input type="checkbox" id="switch-1" checked>
-                        <label for="switch-1">显示当前位置</label>
-                    </div>
+            <div class="mb-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="route" name="radio-group" id="radio-1" checked>
+                    <label class="form-check-label" for="radio-1">路线</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="dot" name="radio-group" id="radio-2">
+                    <label class="form-check-label" for="radio-2">亮度图</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="bubble" name="radio-group" id="radio-3">
+                    <label class="form-check-label" for="radio-3">气泡图</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="heatmap" name="radio-group" id="radio-4">
+                    <label class="form-check-label" for="radio-4">热力图</label>
                 </div>
             </div>
-        </div>
-        <div class="content-wrapper">
-            <div id="map" style="height: 100%;"></div>
+            <button type="button" class="mb-3 btn btn-primary" onclick="search()"><i class="ri-send-plane-line"></i>
+                确定</button>
+            <div class="alert alert-primary">
+                找到 <span id="count">-</span> 个点
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="switch-1">
+                <label class="form-check-label" for="switch-1">显示当前位置 <i class="ri-focus-3-line"></i></label>
+            </div>
         </div>
     </div>
+    <div id="map"></div>
+    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#main-offcanvas"
+        class="btn btn-secondary position-absolute m-2">
+        <i class="ri-equalizer-line"></i>
+    </button>
     <script src="js/script.js"></script>
     <script>
         moment.locale(navigator.language);
 
         scene.addImage('arrow', 'img/arrow.svg');
         scene.on('loaded', () => {
-            const mapTheme = new L7.MapTheme();
-            scene.addControl(mapTheme);
+            scene.addControl(new L7.Scale());
+            scene.addControl(new L7.MapTheme());
         });
 
         $("#switch-1").change(() => {
