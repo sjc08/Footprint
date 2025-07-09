@@ -44,7 +44,7 @@ namespace Footprint
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            var group = view.FindViewById<MaterialButtonToggleGroup>(Resource.Id.toggleGroup);
+            var group = view?.FindViewById<MaterialButtonToggleGroup>(Resource.Id.toggleGroup);
             for (int i = 0; i < group.ChildCount; i++)
             {
                 int index = i; // Pay attention to closures!
@@ -52,7 +52,7 @@ namespace Footprint
                 radioButton.Click += (_, _) => connector?.WhenConnected(s => s.Mode = index);
             }
             connector?.WhenConnected(s => group.Check(group.GetChildAt(s.Mode).Id));
-            live = view.FindViewById<WebView>(Resource.Id.liveView);
+            live = view?.FindViewById<WebView>(Resource.Id.liveView);
             live.Settings.AllowUniversalAccessFromFileURLs = true;
             live.Settings.JavaScriptEnabled = true;
             live.AddJavascriptInterface(new JavascriptInterface(), "CS");

@@ -20,7 +20,7 @@ namespace Footprint
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            this.view = view.FindViewById<WebView>(Resource.Id.webView);
+            this.view = view?.FindViewById<WebView>(Resource.Id.webView);
             this.view.Settings.AllowUniversalAccessFromFileURLs = true;
             this.view.Settings.JavaScriptEnabled = true;
             this.view.AddJavascriptInterface(new JavascriptInterface(), "CS");

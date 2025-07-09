@@ -34,7 +34,7 @@ namespace Footprint
         {
             base.OnDestroy();
 
-            if (Connector.Connected)
+            if (Connector.IsConnected)
                 UnbindService(Connector);
         }
 

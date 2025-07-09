@@ -42,10 +42,10 @@ namespace Footprint
                 Database.Connection.Table<Point>().Count(),
                 new FileInfo(Database.Connection.DatabasePath).Length.Bytes().Humanize()
             ]);
-            var map = view.FindViewById<EditText>(Resource.Id.map);
+            var map = view?.FindViewById<EditText>(Resource.Id.map);
             map.Text = Settings.Instance.Map;
             map.TextChanged += (_, e) => Settings.Instance.Map = e.Text.ToString();
-            var style = view.FindViewById<EditText>(Resource.Id.style);
+            var style = view?.FindViewById<EditText>(Resource.Id.style);
             style.Text = Settings.Instance.Style;
             style.TextChanged += (_, e) => Settings.Instance.Style = e.Text.ToString();
         }
@@ -68,7 +68,7 @@ namespace Footprint
                 {
                     if (requestCode == 1)
                     {
-                        using var inputStream = Context.ContentResolver.OpenInputStream(uri);
+                        using var inputStream = Context?.ContentResolver?.OpenInputStream(uri);
                         using var reader = new StreamReader(inputStream);
                         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
                         var records = csv.GetRecords<Point>();
@@ -76,7 +76,7 @@ namespace Footprint
                     }
                     if (requestCode == 2)
                     {
-                        using var outputStream = Context.ContentResolver.OpenOutputStream(DocumentFile.FromTreeUri(Activity, uri).CreateFile("text/csv", "Footprint.csv").Uri);
+                        using var outputStream = Context?.ContentResolver?.OpenOutputStream(DocumentFile.FromTreeUri(Activity, uri).CreateFile("text/csv", "Footprint.csv").Uri);
                         using var writer = new StreamWriter(outputStream);
                         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                         var records = Database.Connection.Table<Point>().ToList();
@@ -85,7 +85,7 @@ namespace Footprint
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(Activity, ex.Message, ToastLength.Short).Show();
+                    Toast.MakeText(Activity, ex.Message, ToastLength.Short)?.Show();
                 }
             }
         }
