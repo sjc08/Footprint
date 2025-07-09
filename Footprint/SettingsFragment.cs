@@ -31,10 +31,10 @@ namespace Footprint
             };
             view.FindViewById<Button>(Resource.Id.button3).Click += (_, _) =>
             {
-                var builder = new AlertDialog.Builder(Activity).SetTitle("警告")
-                                                               .SetMessage($"您的所有数据将会被永久删除，此操作不可恢复！")
-                                                               .SetPositiveButton("是", delegate { Database.Connection.DeleteAll<Point>(); })
-                                                               .SetNegativeButton("否", delegate { })
+                var builder = new AlertDialog.Builder(Activity).SetTitle("警告")?
+                                                               .SetMessage($"您的所有数据将会被永久删除，此操作不可恢复！")?
+                                                               .SetPositiveButton("是", delegate { Database.Connection.DeleteAll<Point>(); })?
+                                                               .SetNegativeButton("否", delegate { })?
                                                                .Show();
             };
             view.FindViewById<TextView>(Resource.Id.dataSummary).Text = GetString(Resource.String.data_summary,
@@ -44,10 +44,10 @@ namespace Footprint
             ]);
             var map = view?.FindViewById<EditText>(Resource.Id.map);
             map.Text = Settings.Instance.Map;
-            map.TextChanged += (_, e) => Settings.Instance.Map = e.Text.ToString();
+            map.TextChanged += (_, e) => Settings.Instance.Map = e.Text?.ToString();
             var style = view?.FindViewById<EditText>(Resource.Id.style);
             style.Text = Settings.Instance.Style;
-            style.TextChanged += (_, e) => Settings.Instance.Style = e.Text.ToString();
+            style.TextChanged += (_, e) => Settings.Instance.Style = e.Text?.ToString();
         }
 
         public override void OnDestroy()

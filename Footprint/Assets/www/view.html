@@ -73,26 +73,26 @@
 
         $("#switch-1").change(() => {
             if (!this.checked) {
-                if (locMarkder != null) {
-                    locMarkder.remove();
+                if (locMarker != null) {
+                    locMarker.remove();
                 }
             }
         });
 
-        var locMarkder;
+        var locMarker;
 
         function update(location) {
-            if (locMarkder != null)
-                locMarkder.remove();
+            if (locMarker != null)
+                locMarker.remove();
             if ($("#switch-1").prop('checked')) {
                 var pos = coordtransform.wgs84togcj02(location.Longitude, location.Latitude);
                 const img = document.createElement('img');
                 img.src = 'img/circle.svg';
-                locMarkder = new L7.Marker({
+                locMarker = new L7.Marker({
                     element: img,
                     anchor: 'center'
                 }).setLnglat(pos);
-                scene.addMarker(locMarkder);
+                scene.addMarker(locMarder);
             }
         }
 

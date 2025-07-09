@@ -28,7 +28,7 @@ namespace Footprint
             base.OnCreate();
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-                ((NotificationManager)GetSystemService(NotificationService)).CreateNotificationChannel(new(CHANNEL_ID, CHANNEL_NAME, NotificationImportance.Default));
+                ((NotificationManager)GetSystemService(NotificationService))?.CreateNotificationChannel(new(CHANNEL_ID, CHANNEL_NAME, NotificationImportance.Default));
 
             locationManager = (LocationManager)GetSystemService(LocationService);
             Database.Connection.CreateTable<Point>();

@@ -25,9 +25,9 @@ namespace Footprint
             Database.Connection.CreateTable<Point>();
 
             var bottomNav = FindViewById<BottomNavigationView>(Resource.Id.bottom_nav);
-            bottomNav.SetOnItemSelectedListener(this);
+            bottomNav?.SetOnItemSelectedListener(this);
 
-            FragmentManager.BeginTransaction().Replace(Resource.Id.content, home).Commit();
+            FragmentManager?.BeginTransaction()?.Replace(Resource.Id.content, home)?.Commit();
         }
 
         protected override void OnDestroy()
@@ -47,13 +47,13 @@ namespace Footprint
             switch (p0.ItemId)
             {
                 case Resource.Id.home:
-                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, home).Commit();
+                    FragmentManager?.BeginTransaction()?.Replace(Resource.Id.content, home)?.Commit();
                     break;
                 case Resource.Id.view:
-                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, view).Commit();
+                    FragmentManager?.BeginTransaction()?.Replace(Resource.Id.content, view)?.Commit();
                     break;
                 case Resource.Id.settings:
-                    FragmentManager.BeginTransaction().Replace(Resource.Id.content, settings).Commit();
+                    FragmentManager?.BeginTransaction()?.Replace(Resource.Id.content, settings)?.Commit();
                     break;
             }
             return true;
